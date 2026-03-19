@@ -20,6 +20,23 @@ export const fetchFavorites = createAsyncThunk('favorites/fetchFavorites', async
   }
 });
 
+// generated-by-copilot: clearAllFavorites - DELETE all favorites for the authenticated user
+export const clearAllFavorites = createAsyncThunk('favorites/clearAllFavorites', async (token, { rejectWithValue }) => {
+  try {
+    const res = await fetch('http://localhost:4000/api/v1/favorites', {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error?.message || 'Failed to clear favorites');
+    }
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+});
+
 // generated-by-copilot: Updated to handle new error response format
 export const addFavorite = createAsyncThunk('favorites/addFavorite', async ({ token, bookId }, { rejectWithValue }) => {
   try {
@@ -49,7 +66,13 @@ const favoritesSlice = createSlice({
   reducers: {
     clearError: (state) => {
       state.error = null;
-    }
+    },
+    // generated-by-copilot: Synchronously clear favorites items from state
+    clearFavorites: (state) => {
+      state.items = [];
+      state.status = 'idle';
+      state.error = null;
+    },
   },
   extraReducers: builder => {
     builder
@@ -73,9 +96,21 @@ const favoritesSlice = createSlice({
       })
       .addCase(addFavorite.rejected, (state, action) => {
         state.error = action.payload;
+      })
+      // generated-by-copilot: Handle clearAllFavorites lifecycle
+      .addCase(clearAllFavorites.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(clearAllFavorites.fulfilled, (state) => {
+        state.items = [];
+        state.status = 'succeeded';
+        state.error = null;
+      })
+      .addCase(clearAllFavorites.rejected, (state, action) => {
+        state.error = action.payload;
       });
   },
 });
 
-export const { clearError } = favoritesSlice.actions;
+export const { clearError, clearFavorites } = favoritesSlice.actions;
 export default favoritesSlice.reducer;
