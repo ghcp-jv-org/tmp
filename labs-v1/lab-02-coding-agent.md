@@ -77,15 +77,16 @@ Create a .gitignore file with node_modules and other commonly irrelevant files a
 
 ## Exercise 1: Issue-to-PR Lifecycle - Clear All Favorites
 
-> **Purpose:** Walk through the complete Coding Agent pipeline end-to-end. You'll create an issue, assign it to Copilot, monitor the Actions workflow, and review the generated PR - learning every step of the autonomous workflow before touching any code.
+> **Purpose:** Walk through the complete Coding Agent pipeline end-to-end. You'll create a GitHub Issue using Agent Mode in VS Code, run it on the cloud, monitor the Actions workflow, and review the generated PR - learning every step of the autonomous workflow before touching any code.
 
-### Step 1: Create the Issue
+### Step 1: Create the Issue via Agent Mode
 
-1.  Go to your repository on **GitHub.com**
-2.  Open **Copilot Chat** on the repo page
-3.  Submit:
+1.  Open **Copilot Chat** in VS Code and switch to **Agent Mode**
+2.  Submit the following prompt:
 
 ```
+Create a GitHub Issue in my repository with the following details:
+
 Title: Add Clear All Favorites button
 
 Description:
@@ -97,21 +98,18 @@ Requirements:
 - Update both frontend and backend to support this feature
 - Add appropriate error handling
 - Include tests for the new functionality
+
+After creating the issue, assign it to Copilot.
 ```
 
-1.  Verify the issue is created with a clear title and description
+3.  When Agent Mode asks for confirmation, approve the GitHub tool calls
+4.  Verify the issue is created and assigned - look for the 👀 emoji reaction on the issue
 
-### Step 2: Assign to Copilot
+**Expected:** Copilot reacts with 👀 within ~30 seconds, and a GitHub Actions workflow is triggered.
 
-1.  Open the created issue
-2.  In the **Assignees** section, assign **Copilot**
-3.  Confirm: look for the 👀 emoji reaction on the issue
+### Step 2: Monitor the Workflow
 
-**Expected:** Copilot reacts with 👀 within ~30 seconds.
-
-### Step 3: Monitor the Workflow
-
-1.  Open the **Actions** tab in your repository
+1.  Open the **Actions** tab in your repository on **GitHub.com**
 2.  Find the triggered workflow run
 3.  Click into it and observe:
 
@@ -124,7 +122,7 @@ Requirements:
 
 **Expected wait:** ~5-7 minutes for PR creation.
 
-### Step 4: Review the PR
+### Step 3: Review the PR
 
 1.  When the PR appears, open it
 2.  Check:
@@ -133,7 +131,7 @@ Requirements:
     *   **Files changed** - Backend route + frontend component changes
 3.  Review code quality and test coverage
 
-### Step 5: Verify via PR
+### Step 4: Verify via PR
 
 1.  In the PR **Files changed** tab, confirm:
     *   Backend: new route or updated `favorites.js` with a clear-all endpoint
@@ -143,7 +141,7 @@ Requirements:
 
 ### Validation
 
-*   Issue created with clear description
+*   Issue created via Agent Mode in VS Code
 *   Copilot assigned, 👀 reaction visible
 *   PR created with working implementation
 *   PR timeline shows agent reasoning

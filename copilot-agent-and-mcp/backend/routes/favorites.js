@@ -105,6 +105,29 @@ function createFavoritesRouter({ usersFile, booksFile, readJSON, writeJSON, auth
     }
   });
 
+  // generated-by-copilot: DELETE /favorites - Clear all favorites for the authenticated user
+  router.delete('/', authenticateToken, (req, res) => {
+    try {
+      const users = readJSON(usersFile);
+      const user = users.find(u => u.username === req.user.username);
+
+      if (!user) {
+        return res.status(404).json(
+          createErrorResponse('USER_NOT_FOUND', 'User not found')
+        );
+      }
+
+      user.favorites = [];
+      writeJSON(usersFile, users);
+
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json(
+        createErrorResponse('INTERNAL_ERROR', 'Failed to clear favorites')
+      );
+    }
+  });
+
   // generated-by-copilot: DELETE /favorites/:bookId - Remove from favorites
   router.delete('/:bookId', authenticateToken, (req, res) => {
     const { bookId } = req.params;
