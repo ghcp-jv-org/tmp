@@ -58,14 +58,10 @@ git push -u origin main
 **Option B: Using Copilot Chat prompts**
 
 1.  Open **Copilot Chat** in VS Code
-2.  Submit the following prompts:
+2.  Submit the following prompt:
 
 ```
-Initialize a git repository, stage all files, and commit with message "Initial commit"
-```
-
-```
-Add a remote origin pointing to my GitHub repo and push the main branch
+Create a .gitignore file with node_modules and other commonly irrelevant files and folders. Initialize a git repository, stage all files, and commit with message "Initial commit". Add a remote origin pointing to https://github.com/<your-username>/<your-repo>.git and push the main branch.
 ```
 
 ---
