@@ -6,6 +6,7 @@ dist/
 build/
 out/
 _bkp/
+labs-v1/
 
 # Environment files
 .env

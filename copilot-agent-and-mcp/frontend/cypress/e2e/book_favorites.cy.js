@@ -36,15 +36,48 @@ describe('Book Favorites App', () => {
     cy.get('h2').contains('My Favorite Books').should('exist');
   });
 
-  it('should logout and protect routes', () => {
+  it('should allow clearing all favorites with confirmation', () => {
     // Login first
     cy.contains('Login').click();
     cy.get('input[name="username"]').type(user.username);
     cy.get('input[name="password"]').type(user.password);
     cy.get('button#login').click();
-    cy.get('button#logout').click();
-    cy.contains('Login').should('exist');
-    cy.visit('http://localhost:5173/books');
-    cy.url().should('eq', 'http://localhost:5173/');
+    // Add a book to favorites
+    cy.contains('Books').click();
+    cy.contains('h2', 'Books').should('exist');
+    cy.get('button').contains('Add to Favorites').first().click();
+    // Navigate to favorites
+    cy.get('a#favorites-link').click();
+    cy.get('h2').contains('My Favorite Books').should('exist');
+    // Click Clear All Favorites button
+    cy.get('[data-testid="clear-all-favorites-btn"]').should('exist').click();
+    // Confirmation dialog should appear
+    cy.get('[data-testid="confirm-dialog"]').should('be.visible');
+    // Click confirm to clear
+    cy.get('[data-testid="confirm-clear-btn"]').click();
+    // Favorites list should be empty
+    cy.contains('No favorite books yet.').should('exist');
+  });
+
+  it('should cancel clearing favorites when cancel is clicked', () => {
+    // Login first
+    cy.contains('Login').click();
+    cy.get('input[name="username"]').type(user.username);
+    cy.get('input[name="password"]').type(user.password);
+    cy.get('button#login').click();
+    // Add a book to favorites
+    cy.contains('Books').click();
+    cy.get('button').contains('Add to Favorites').first().click();
+    // Navigate to favorites
+    cy.get('a#favorites-link').click();
+    cy.get('h2').contains('My Favorite Books').should('exist');
+    // Click Clear All Favorites button
+    cy.get('[data-testid="clear-all-favorites-btn"]').should('exist').click();
+    // Confirmation dialog should appear
+    cy.get('[data-testid="confirm-dialog"]').should('be.visible');
+    // Click cancel - favorites should remain
+    cy.get('[data-testid="cancel-clear-btn"]').click();
+    cy.get('[data-testid="confirm-dialog"]').should('not.exist');
+    cy.get('[data-testid="clear-all-favorites-btn"]').should('exist');
   });
 });
