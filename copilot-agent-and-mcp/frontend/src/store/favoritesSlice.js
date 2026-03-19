@@ -91,20 +91,17 @@ const favoritesSlice = createSlice({
       .addCase(addFavorite.pending, (state) => {
         state.error = null;
       })
-      .addCase(addFavorite.fulfilled, (state, action) => {
+      .addCase(addFavorite.fulfilled, (state) => {
         // After adding, the list will be refreshed by fetchFavorites
       })
       .addCase(addFavorite.rejected, (state, action) => {
         state.error = action.payload;
       })
-      // generated-by-copilot: Handle clearAllFavorites lifecycle
       .addCase(clearAllFavorites.pending, (state) => {
         state.error = null;
       })
       .addCase(clearAllFavorites.fulfilled, (state) => {
         state.items = [];
-        state.status = 'succeeded';
-        state.error = null;
       })
       .addCase(clearAllFavorites.rejected, (state, action) => {
         state.error = action.payload;
