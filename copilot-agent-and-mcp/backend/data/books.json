@@ -1,0 +1,42 @@
+[
+  {
+    "id": "0275a288cbe45f1b",
+    "title": "O'Reilly's Guide to C++",
+    "author": "Harper Lee",
+    "isbn": "6062601727151",
+    "year": 1900,
+    "description": "A compelling story by a renowned author. Volume 1."
+  },
+  {
+    "id": "63a3333bc84348f3",
+    "title": "\"Quoted Title\"",
+    "author": "Virginia Woolf",
+    "isbn": "2788066831358",
+    "year": 2025,
+    "description": "A compelling story by a renowned author. Volume 2."
+  },
+  {
+    "id": "7118c082d5088abf",
+    "title": "A",
+    "author": "F. Scott Fitzgerald",
+    "isbn": "2551749405340",
+    "year": 1978,
+    "description": "A compelling story by a renowned author. Volume 3."
+  },
+  {
+    "id": "ba30d7f91d0c3387",
+    "title": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "author": "Ernest Hemingway",
+    "isbn": "7506213216202",
+    "year": 2006,
+    "description": "A compelling story by a renowned author. Volume 4."
+  },
+  {
+    "id": "2b433e98592a4ba3",
+    "title": "日本語タイトル",
+    "author": "George Orwell",
+    "isbn": "7368190923703",
+    "year": 2024,
+    "description": "A compelling story by a renowned author. Volume 5."
+  }
+]

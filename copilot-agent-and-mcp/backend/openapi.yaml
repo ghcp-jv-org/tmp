@@ -1,0 +1,615 @@
+openapi: 3.0.3
+info:
+  title: Book Management API
+  description: A REST API for managing books, user favorites, and reading lists
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@bookapi.com
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:4000/api/v1
+    description: Development server
+  - url: https://api.bookapp.com/v1
+    description: Production server
+
+security:
+  - bearerAuth: []
+
+paths:
+  /users:
+    post:
+      summary: Register a new user
+      tags: [Authentication]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                  minLength: 3
+                  maxLength: 50
+                password:
+                  type: string
+                  minLength: 6
+            example:
+              username: "johndoe"
+              password: "securepass123"
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                message: "User registered"
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/tokens:
+    post:
+      summary: Authenticate user and get JWT token
+      tags: [Authentication]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+            example:
+              username: "johndoe"
+              password: "securepass123"
+      responses:
+        '200':
+          description: Authentication successful
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per hour
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: Requests remaining in current window
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                example:
+                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /books:
+    get:
+      summary: Get paginated list of books
+      tags: [Books]
+      security: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: author
+          in: query
+          schema:
+            type: string
+        - name: genre
+          in: query
+          schema:
+            type: string
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [title, author, year, -title, -author, -year]
+            default: title
+      responses:
+        '200':
+          description: List of books with pagination
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+                  _links:
+                    $ref: '#/components/schemas/PaginationLinks'
+
+  /books/stats:
+    get:
+      summary: Get book statistics
+      tags: [Books]
+      security: []
+      responses:
+        '200':
+          description: Book statistics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalBooks:
+                    type: integer
+                  favoritedBooks:
+                    type: integer
+                example:
+                  totalBooks: 150
+                  favoritedBooks: 23
+
+  /favorites:
+    get:
+      summary: Get user's favorite books
+      tags: [Favorites]
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: User's favorite books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+                  _links:
+                    $ref: '#/components/schemas/PaginationLinks'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Add book to favorites
+      tags: [Favorites]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [bookId]
+              properties:
+                bookId:
+                  type: string
+            example:
+              bookId: "123"
+      responses:
+        '201':
+          description: Book added to favorites
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Book already in favorites
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /reading-lists:
+    get:
+      summary: Get user's reading list
+      tags: [Reading Lists]
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [want-to-read, currently-reading, finished]
+      responses:
+        '200':
+          description: User's reading list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ReadingListItem'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+                  _links:
+                    $ref: '#/components/schemas/PaginationLinks'
+
+    post:
+      summary: Add book to reading list
+      tags: [Reading Lists]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [bookId, status]
+              properties:
+                bookId:
+                  type: string
+                status:
+                  type: string
+                  enum: [want-to-read, currently-reading, finished]
+            example:
+              bookId: "123"
+              status: "want-to-read"
+      responses:
+        '201':
+          description: Book added to reading list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  book:
+                    $ref: '#/components/schemas/ReadingListItem'
+        '400':
+          description: Invalid input or book already in list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /reading-lists/{bookId}:
+    put:
+      summary: Update reading status (full replacement)
+      tags: [Reading Lists]
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [want-to-read, currently-reading, finished]
+      responses:
+        '200':
+          description: Reading status updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Invalid status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Book not found in reading list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    patch:
+      summary: Update reading status (partial update)
+      tags: [Reading Lists]
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [want-to-read, currently-reading, finished]
+      responses:
+        '200':
+          description: Reading status updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+
+    delete:
+      summary: Remove book from reading list
+      tags: [Reading Lists]
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Book removed from reading list
+        '404':
+          description: Book not found in reading list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        genre:
+          type: string
+        year:
+          type: integer
+        description:
+          type: string
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+            favorite:
+              type: object
+              properties:
+                href:
+                  type: string
+      example:
+        id: "123"
+        title: "The Great Gatsby"
+        author: "F. Scott Fitzgerald"
+        genre: "Classic Literature"
+        year: 1925
+        description: "A classic American novel..."
+        _links:
+          self:
+            href: "/api/v1/books/123"
+          favorite:
+            href: "/api/v1/favorites"
+
+    ReadingListItem:
+      allOf:
+        - $ref: '#/components/schemas/Book'
+        - type: object
+          properties:
+            readingStatus:
+              type: string
+              enum: [want-to-read, currently-reading, finished]
+            dateAdded:
+              type: string
+              format: date-time
+            dateFinished:
+              type: string
+              format: date-time
+              nullable: true
+
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        pages:
+          type: integer
+        hasNext:
+          type: boolean
+        hasPrev:
+          type: boolean
+      example:
+        page: 1
+        limit: 20
+        total: 150
+        pages: 8
+        hasNext: true
+        hasPrev: false
+
+    PaginationLinks:
+      type: object
+      properties:
+        self:
+          type: object
+          properties:
+            href:
+              type: string
+        first:
+          type: object
+          properties:
+            href:
+              type: string
+        last:
+          type: object
+          properties:
+            href:
+              type: string
+        next:
+          type: object
+          properties:
+            href:
+              type: string
+        prev:
+          type: object
+          properties:
+            href:
+              type: string
+
+    SuccessResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Operation completed successfully"
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: array
+              items:
+                type: string
+      example:
+        error:
+          code: "VALIDATION_ERROR"
+          message: "Invalid input provided"
+          details: ["Username is required", "Password must be at least 6 characters"]
+
+  responses:
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    
+    ValidationError:
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+tags:
+  - name: Authentication
+    description: User registration and authentication
+  - name: Books
+    description: Book catalog operations
+  - name: Favorites
+    description: User favorite books management
+  - name: Reading Lists
+    description: User reading list management

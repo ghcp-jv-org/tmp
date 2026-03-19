@@ -1,0 +1,23 @@
+{
+	"servers": {
+		"book-database": {
+			"type": "stdio",
+			"command": "node",
+			"args": ["book-database-mcp-server\\dist\\index.js"]
+		},
+		"GitHub w/ Spaces": {
+			"type": "http",
+			"url": "https://api.githubcopilot.com/mcp/",
+			"headers": {
+				"Authorization": "Bearer ${input:github_token}",
+				"X-MCP-Toolsets": "default,copilot_spaces"
+			}
+		},
+        "context7": {
+            "type": "stdio",
+            "command": "npx",
+            "args": ["-y", "@upstash/context7-mcp@latest"]
+        }		
+	},
+	"inputs": []
+}

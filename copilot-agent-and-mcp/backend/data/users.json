@@ -1,0 +1,85 @@
+[
+  {
+    "id": "f775f90f5ab95756",
+    "username": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "email": "user1@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": [
+      "nonexistent-book-id"
+    ]
+  },
+  {
+    "id": "427c9d25237d08f7",
+    "username": "user2",
+    "email": "user2@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": [
+      "ba30d7f91d0c3387",
+      "7118c082d5088abf",
+      "63a3333bc84348f3",
+      "2b433e98592a4ba3"
+    ]
+  },
+  {
+    "id": "c77d9c69206779f9",
+    "username": "user3",
+    "email": "user3@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": [
+      "2b433e98592a4ba3",
+      "7118c082d5088abf"
+    ]
+  },
+  {
+    "username": "e2euser299",
+    "password": "e2epass795",
+    "favorites": [],
+    "readingList": {}
+  },
+  {
+    "username": "e2ebooks265",
+    "password": "e2epass3064",
+    "favorites": [],
+    "readingList": {}
+  },
+  {
+    "username": "e2euser8984",
+    "password": "e2epass222",
+    "favorites": [],
+    "readingList": {}
+  },
+  {
+    "username": "e2euser17",
+    "password": "e2epass668",
+    "favorites": [],
+    "readingList": {}
+  },
+  {
+    "username": "e2euser581",
+    "password": "e2epass601",
+    "favorites": [
+      "0275a288cbe45f1b"
+    ],
+    "readingList": {}
+  },
+  {
+    "username": "e2ebooks313",
+    "password": "e2epass3327",
+    "favorites": [
+      "0275a288cbe45f1b"
+    ],
+    "readingList": {}
+  },
+  {
+    "username": "e2euser900",
+    "password": "e2epass8396",
+    "favorites": [],
+    "readingList": {}
+  },
+  {
+    "username": "e2euser763",
+    "password": "e2epass313",
+    "favorites": [],
+    "readingList": {}
+  }
+]

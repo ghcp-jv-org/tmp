@@ -1,0 +1,358 @@
+# Lab 02 - Coding Agent: Autonomous PR Workflow
+
+> **Mode:** GitHub.com  
+> **Duration:** 45 min  
+> **Prerequisite:** [Lab 00](00-prerequisites.md)
+
+---
+
+## Objective
+
+Use the GitHub Copilot Coding Agent to implement features by assigning GitHub Issues. The agent works asynchronously - it analyzes the repo, generates code, and opens a draft PR.
+
+Each exercise teaches a different aspect of the Coding Agent workflow:
+
+| Exercise | Skill | What You Learn |
+| --- | --- | --- |
+| 1 | **Issue-to-PR lifecycle** | Walk through the full Coding Agent pipeline: create issue → assign → monitor Actions → review PR |
+| 2 | **PR iteration loop** | Refine agent output by commenting on the PR - the agent reads feedback and pushes new commits |
+| 3 | **Multi-issue coordination** | Decompose a complex feature into linked issues - the agent reads all linked issues via GitHub MCP and coordinates a full-stack PR |
+
+> All exercises run entirely on **GitHub.com**. No local sync needed.
+
+---
+
+## How It Works
+
+```
+Issue assigned    →  GitHub App     →  Actions workflow  →  Ephemeral runner
+to @copilot          receives event    triggered            provisioned
+                                                                 │
+PR merged         ←  Changes        ←  Agent codes        ←  Setup runs
+(by human)           requested?         + opens PR            (copilot-setup-steps.yml)
+                     (loop back)
+```
+
+The agent reads `.github/copilot-instructions.md` for project conventions and `.github/workflows/copilot-setup-steps.yml` for environment setup.
+
+---
+
+## Pre-requisite: Push Your Code to GitHub
+
+Before starting the exercises, ensure your local repository is pushed to GitHub so the Coding Agent can access it.
+
+**Option A: Using terminal commands**
+
+1.  Open a terminal in your project root
+2.  Initialize and push to GitHub:
+
+```
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/<your-username>/<your-repo>.git
+git branch -M main
+git push -u origin main
+```
+
+**Option B: Using Copilot Chat prompts**
+
+1.  Open **Copilot Chat** in VS Code
+2.  Submit the following prompts:
+
+```
+Initialize a git repository, stage all files, and commit with message "Initial commit"
+```
+
+```
+Add a remote origin pointing to my GitHub repo and push the main branch
+```
+
+---
+
+1.  Verify on **GitHub.com** that your repository contains:
+    *   `.github/copilot-instructions.md`
+    *   `.github/workflows/copilot-setup-steps.yml`
+    *   The `backend/` and `frontend/` directories with application code
+
+> If your repo is already on GitHub, ensure all recent local changes are pushed before proceeding.
+
+---
+
+## Exercise 1: Issue-to-PR Lifecycle - Clear All Favorites
+
+> **Purpose:** Walk through the complete Coding Agent pipeline end-to-end. You'll create an issue, assign it to Copilot, monitor the Actions workflow, and review the generated PR - learning every step of the autonomous workflow before touching any code.
+
+### Step 1: Create the Issue
+
+1.  Go to your repository on **GitHub.com**
+2.  Open **Copilot Chat** on the repo page
+3.  Submit:
+
+```
+Title: Add Clear All Favorites button
+
+Description:
+As a user, I want to be able to clear all my favorite books at once with a single button click.
+
+Requirements:
+- Add a "Clear All" button in the Favorites section
+- Show a confirmation dialog before clearing
+- Update both frontend and backend to support this feature
+- Add appropriate error handling
+- Include tests for the new functionality
+```
+
+1.  Verify the issue is created with a clear title and description
+
+### Step 2: Assign to Copilot
+
+1.  Open the created issue
+2.  In the **Assignees** section, assign **Copilot**
+3.  Confirm: look for the 👀 emoji reaction on the issue
+
+**Expected:** Copilot reacts with 👀 within ~30 seconds.
+
+### Step 3: Monitor the Workflow
+
+1.  Open the **Actions** tab in your repository
+2.  Find the triggered workflow run
+3.  Click into it and observe:
+
+| Log Section | What's Happening |
+| --- | --- |
+| Runner provisioning | Fresh Ubuntu environment spinning up |
+| Checkout | Repository being cloned |
+| copilot-setup-steps | Your custom setup running (`npm install`, etc.) |
+| Agent activity | Copilot reading code, planning, writing changes |
+
+**Expected wait:** ~5-7 minutes for PR creation.
+
+### Step 4: Review the PR
+
+1.  When the PR appears, open it
+2.  Check:
+    *   **PR body** - Copilot's explanation of changes
+    *   **PR timeline** - Logged actions and reasoning
+    *   **Files changed** - Backend route + frontend component changes
+3.  Review code quality and test coverage
+
+### Step 5: Verify via PR
+
+1.  In the PR **Files changed** tab, confirm:
+    *   Backend: new route or updated `favorites.js` with a clear-all endpoint
+    *   Frontend: "Clear All" button added to `Favorites.jsx`
+    *   Tests: at least one new test file or test case
+2.  Check the **Actions** tab - CI should pass (backend tests + frontend build)
+
+### Validation
+
+*   Issue created with clear description
+*   Copilot assigned, 👀 reaction visible
+*   PR created with working implementation
+*   PR timeline shows agent reasoning
+*   CI passes on the PR (check Actions)
+*   Code changes cover backend, frontend, and tests
+
+---
+
+## Exercise 2: PR Iteration Loop - Book Sorting
+
+> **Purpose:** Learn the feedback loop. After the agent creates a PR, you'll add a comment requesting changes - and watch the agent read your feedback, update the code, and push a new commit. This is how you refine agent output without starting over.
+
+### Step 1: Create the Issue
+
+In **Copilot Chat** on your repository page:
+
+```
+Title: Add book list sorting options
+
+Description:
+As a user, I want to be able to sort the book list by different criteria (title, author) to better organize and find books.
+
+Requirements:
+- Add sorting options (dropdown or buttons) for title and author
+- Implement sorting on both frontend and backend
+- Maintain sort state when navigating
+- Add visual indication of current sort order
+- Include unit and integration tests
+```
+
+### Step 2: Assign to Copilot
+
+1.  Assign the issue to **Copilot**
+2.  Wait for 👀 reaction
+3.  Open **Actions** tab to monitor
+
+### Step 3: Review the PR
+
+When the PR is created, examine:
+
+*   Frontend: UI controls (dropdown/buttons) for sort selection
+*   State management: Sort state in Redux store
+*   Backend: Any server-side sorting endpoints (if applicable)
+*   Tests: Coverage for sort logic
+
+### Step 4: Iterate via PR Comment
+
+This is the key step - add a comment on the PR requesting a specific change:
+
+```
+Add a visual indicator (arrow icon) next to the column header showing the current sort direction.
+```
+
+**Expected:** Copilot reads the comment, updates the code, and pushes a new commit to the same PR.
+
+### Step 5: Verify the Iteration
+
+1.  Wait for the new commit to appear (~3-5 minutes)
+2.  Review the diff - confirm the arrow indicator was added
+3.  Check the PR timeline - note how the agent references your comment
+
+### Validation
+
+*   Sorting PR created with UI controls
+*   PR comment triggered a new commit from Copilot
+*   New commit addresses the feedback (arrow indicator added)
+*   PR timeline shows agent reading and responding to your comment
+*   CI passes after the iteration
+
+---
+
+## Exercise 3: Multi-Issue Coordination - Book Reviews
+
+> **Purpose:** Decompose a complex feature into separate frontend and backend issues, then link them to a main issue. The Coding Agent reads all linked issues via the GitHub MCP server and coordinates a single PR covering the full stack. This teaches issue decomposition - the pattern for real-world agent-driven development.
+
+Start this exercise, then move to Lab 03 while the agent works (~10 min). Return to review the PR.
+
+### Step 1: Verify MCP Configuration
+
+Before creating issues, confirm the Coding Agent has access to the GitHub MCP server so it can read linked issues.
+
+1.  Go to your repository on **GitHub.com**
+2.  Navigate to **Settings** → **Copilot** → **Coding agent**
+3.  Check the **MCP servers** section. If no servers are configured, add:
+
+```
+{
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "tools": []
+    }
+  }
+}
+```
+
+1.  Note the tools exposed by the configured MCP server - these allow the agent to read issues, PRs, and repository content
+
+> The GitHub MCP server gives the Coding Agent access to issue details, linked references, and repo metadata. Without it, the agent cannot read the linked sub-issues.
+
+### Step 2: Create the Frontend Issue
+
+```
+Title: Frontend Implementation - Book Reviews UI Components
+
+Description:
+Implement the frontend components for the book review system.
+
+Requirements:
+- Add a "Reviews" section to each book card
+- Create a form for submitting new reviews with:
+  * Rating (1-5 stars)
+  * Review text
+  * Submit button
+- Display existing reviews in a scrollable list
+- Show average rating
+- Add loading states and error handling
+- Include frontend unit tests
+
+Technical Considerations:
+- Use existing styling patterns
+- Implement proper form validation
+- Consider responsive design
+```
+
+Note the issue number (e.g., `#4`).
+
+### Step 3: Create the Backend Issue
+
+```
+Title: Backend Implementation - Book Reviews API
+
+Description:
+Implement the backend API and database changes for the book review system.
+
+Requirements:
+- Create new database schema for reviews
+- Implement REST API endpoints:
+  * POST /api/books/{id}/reviews
+  * GET /api/books/{id}/reviews
+  * GET /api/books/{id}/average-rating
+- Add input validation
+- Implement error handling
+- Add backend unit tests
+- Update API documentation
+
+Technical Considerations:
+- Implement proper validation middleware
+- Add rate limiting for review submission
+```
+
+Note the issue number (e.g., `#5`).
+
+### Step 4: Create the Main Feature Issue
+
+Replace `#4` and `#5` with your actual issue numbers.
+
+```
+Title: Implement Book Review System
+
+Description:
+Add the ability for users to review books and see others' reviews.
+
+Requirements:
+This feature consists of two parts:
+- Frontend implementation: #4
+- Backend implementation: #5
+```
+
+### Step 5: Assign and Move On
+
+1.  Assign the **Main Feature Issue** to **Copilot**
+2.  Verify 👀 reaction
+3.  **Move to Lab 03** - return in ~10 minutes to review
+
+### Step 6: Review the PR and Validate MCP Usage (after moving on)
+
+1.  Open the PR
+2.  In the **Copilot Coding Agent timeline**, verify MCP tool calls:
+    *   Look for entries showing the agent calling MCP tools (e.g., `get_issue`, `read_issue_content`)
+    *   Confirm the agent read **both** linked issues (frontend `#4` and backend `#5`)
+    *   Verify the agent understood the full feature scope from the linked issue content
+3.  In **Files changed**, check:
+    *   Frontend: review form component, star rating, review list
+    *   Backend: API endpoints (`POST /api/books/{id}/reviews`, `GET /api/books/{id}/reviews`)
+    *   Tests: coverage for both frontend and backend
+4.  Check **Actions** tab - CI should pass
+
+### Validation
+
+*   MCP server configured in repo settings (Settings → Copilot → Coding agent)
+*   3 linked issues created with proper `#` references
+*   Agent timeline shows MCP tool calls to read linked issues
+*   Frontend + backend implemented in single PR
+*   CI passes on the PR
+*   PR covers all requirements from both sub-issues
+
+---
+
+## Troubleshooting
+
+| Issue | Fix |
+| --- | --- |
+| No 👀 reaction | Verify Copilot Coding Agent is enabled in repo settings |
+| Workflow doesn't trigger | Check `.github/workflows/copilot-setup-steps.yml` exists |
+| PR has errors | Add a PR comment describing the issue - agent will iterate |
+| Agent takes too long | Check Actions tab for errors in the setup step |

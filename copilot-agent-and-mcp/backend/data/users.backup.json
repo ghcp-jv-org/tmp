@@ -1,0 +1,95 @@
+[
+  {
+    "id": "75a16e008dd72f9b",
+    "username": "user1",
+    "email": "user1@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": [
+      "22fc7b1833f6a6ac",
+      "505b6786627714af"
+    ]
+  },
+  {
+    "id": "b0c1eaf6d308ed18",
+    "username": "user2",
+    "email": "user2@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": [
+      "1438d07ad7af5567",
+      "a2cda4b100095ea2"
+    ]
+  },
+  {
+    "id": "178da1fdbfd47c97",
+    "username": "user3",
+    "email": "user3@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": [
+      "22fc7b1833f6a6ac",
+      "9c2f51cf01ad25e0"
+    ]
+  },
+  {
+    "id": "67a3ade376db7f4c",
+    "username": "user4",
+    "email": "user4@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": [
+      "341cfd9130e5837f"
+    ]
+  },
+  {
+    "id": "7eb92215fb1a19c7",
+    "username": "user5",
+    "email": "user5@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": [
+      "22fc7b1833f6a6ac",
+      "1438d07ad7af5567"
+    ]
+  },
+  {
+    "id": "d78b9339fff422bd",
+    "username": "user6",
+    "email": "user6@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": []
+  },
+  {
+    "id": "9689095030754465",
+    "username": "user7",
+    "email": "user7@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": [
+      "9695167674eb3978"
+    ]
+  },
+  {
+    "id": "1c5f398ae58c80ff",
+    "username": "user8",
+    "email": "user8@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": []
+  },
+  {
+    "id": "542aaf48745d3c12",
+    "username": "user9",
+    "email": "user9@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": [
+      "2a669371d95e41dd"
+    ]
+  },
+  {
+    "id": "c1d80e4ad95addc9",
+    "username": "user10",
+    "email": "user10@example.com",
+    "password": "$2b$10$placeholder.hash.for.seed.data.only",
+    "favorites": [
+      "a2cda4b100095ea2",
+      "9695167674eb3978",
+      "2a669371d95e41dd",
+      "1438d07ad7af5567"
+    ]
+  }
+]
