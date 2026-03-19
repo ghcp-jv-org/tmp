@@ -81,11 +81,12 @@ Create a .gitignore file with node_modules and other commonly irrelevant files a
 
 ### Step 1: Create the Issue via Agent Mode
 
-1.  Open **Copilot Chat** in VS Code and switch to **Agent Mode**
-2.  Submit the following prompt:
+1.  Install the GitHub Pull Request extension and open **Copilot Chat** in VS Code.
+2.  Use **Agent** setting and switch to **Cloud** from Local mode.
+3.  Submit the following prompt:
 
 ```
-Create a GitHub Issue in my repository with the following details:
+Implement the below feature.
 
 Title: Add Clear All Favorites button
 
@@ -99,13 +100,11 @@ Requirements:
 - Add appropriate error handling
 - Include tests for the new functionality
 
-After creating the issue, assign it to Copilot.
+Assign the Pull Request to Copilot.
 ```
 
-3.  When Agent Mode asks for confirmation, approve the GitHub tool calls
-4.  Verify the issue is created and assigned - look for the 👀 emoji reaction on the issue
-
-**Expected:** Copilot reacts with 👀 within ~30 seconds, and a GitHub Actions workflow is triggered.
+3.  When Agent Mode asks for confirmation, approve the GitHub tool calls.
+4.  Verify the PR is created and assigned to Copilot.
 
 ### Step 2: Monitor the Workflow
 

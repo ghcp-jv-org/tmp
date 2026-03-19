@@ -120,7 +120,7 @@ function createFavoritesRouter({ usersFile, booksFile, readJSON, writeJSON, auth
       user.favorites = [];
       writeJSON(usersFile, users);
 
-      res.status(204).send();
+      res.json(createSuccessResponse('All favorites cleared'));
     } catch (error) {
       res.status(500).json(
         createErrorResponse('INTERNAL_ERROR', 'Failed to clear favorites')

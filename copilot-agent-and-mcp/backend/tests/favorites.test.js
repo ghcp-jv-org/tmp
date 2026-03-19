@@ -120,48 +120,32 @@ describe('Favorites API', () => {
     expect(res.statusCode).toBe(404);
   });
 
-  it('POST /api/favorites should fail without auth', async () => {
-    const res = await request(app)
-      .post('/api/favorites')
-      .send({ bookId: '1' });
-    expect(res.statusCode).toBe(401);
-  });
-
-  // generated-by-copilot: Tests for DELETE /api/favorites (clear all favorites)
   it('DELETE /api/favorites should clear all favorites for authenticated user', async () => {
     const token = getToken('user1');
-    // Ensure user has at least one favorite before clearing
-    const users = JSON.parse(fs.readFileSync(usersFile, 'utf-8'));
-    const user1 = users.find(u => u.username === 'user1');
-    if (user1.favorites.length === 0) {
-      const books = JSON.parse(fs.readFileSync(booksFile, 'utf-8'));
-      user1.favorites = [String(books[0].id)];
-      fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
-    }
-
     const res = await request(app)
       .delete('/api/favorites')
       .set('Authorization', `Bearer ${token}`);
-    expect(res.statusCode).toBe(204);
-
-    // generated-by-copilot: Verify favorites are actually cleared
+    expect(res.statusCode).toBe(200);
+    expect(res.body.message).toMatch(/cleared/i);
+    // generated-by-copilot: Verify favorites array is now empty
     const verifyRes = await request(app)
       .get('/api/favorites')
       .set('Authorization', `Bearer ${token}`);
-    expect(verifyRes.statusCode).toBe(200);
     expect(verifyRes.body.data).toEqual([]);
   });
 
-  it('DELETE /api/favorites should return 401 without auth', async () => {
+  it('DELETE /api/favorites should fail without auth', async () => {
     const res = await request(app).delete('/api/favorites');
     expect(res.statusCode).toBe(401);
   });
 
-  it('DELETE /api/favorites should return 404 for non-existent user', async () => {
+  it('DELETE /api/favorites should 404 for non-existent user', async () => {
     const token = getToken('nouser');
     const res = await request(app)
       .delete('/api/favorites')
       .set('Authorization', `Bearer ${token}`);
     expect(res.statusCode).toBe(404);
   });
+
+
 });

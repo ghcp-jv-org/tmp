@@ -21,18 +21,16 @@ const Favorites = () => {
     dispatch(fetchFavorites(token));
   }, [dispatch, token, navigate]);
 
-  // generated-by-copilot: Handle clear all button click - show confirmation dialog
-  const handleClearAllClick = () => {
+  // generated-by-copilot: Show custom confirmation dialog before clearing all favorites
+  const handleClearAll = () => {
     setShowConfirm(true);
   };
 
-  // generated-by-copilot: Confirm and dispatch clearAllFavorites
   const handleConfirmClear = () => {
-    setShowConfirm(false);
     dispatch(clearAllFavorites(token));
+    setShowConfirm(false);
   };
 
-  // generated-by-copilot: Cancel and close the confirmation dialog
   const handleCancelClear = () => {
     setShowConfirm(false);
   };
@@ -42,7 +40,27 @@ const Favorites = () => {
 
   return (
     <div>
-      <h2>My Favorite Books</h2>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+        <h2 style={{ margin: 0 }}>My Favorite Books</h2>
+        {favorites.length > 0 && (
+          <button
+            data-testid="clear-all-favorites"
+            onClick={handleClearAll}
+            style={{
+              background: '#e53e3e',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '0.5rem 1.2rem',
+              cursor: 'pointer',
+              fontWeight: 600,
+            }}
+          >
+            Clear All
+          </button>
+        )}
+      </div>
+      {error && <div style={{ color: '#e53e3e', marginBottom: '0.5rem' }}>{error}</div>}
       {favorites.length === 0 ? (
         <div style={{
           background: '#fff',
@@ -71,7 +89,7 @@ const Favorites = () => {
           {/* generated-by-copilot: Clear All button triggers confirmation dialog */}
           <button
             data-testid="clear-all-favorites-btn"
-            onClick={handleClearAllClick}
+            onClick={handleClearAll}
             style={{ marginTop: '1rem', background: '#e53935', color: '#fff', border: 'none', padding: '0.5rem 1.2rem', borderRadius: '4px', cursor: 'pointer' }}
           >
             Clear All Favorites
