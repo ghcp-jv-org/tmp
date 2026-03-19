@@ -120,10 +120,32 @@ describe('Favorites API', () => {
     expect(res.statusCode).toBe(404);
   });
 
-  it('POST /api/favorites should fail without auth', async () => {
+  it('DELETE /api/favorites should clear all favorites for authenticated user', async () => {
+    const token = getToken('user1');
     const res = await request(app)
-      .post('/api/favorites')
-      .send({ bookId: '1' });
+      .delete('/api/favorites')
+      .set('Authorization', `Bearer ${token}`);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.message).toMatch(/cleared/i);
+    // generated-by-copilot: Verify favorites array is now empty
+    const verifyRes = await request(app)
+      .get('/api/favorites')
+      .set('Authorization', `Bearer ${token}`);
+    expect(verifyRes.body.data).toEqual([]);
+  });
+
+  it('DELETE /api/favorites should fail without auth', async () => {
+    const res = await request(app).delete('/api/favorites');
     expect(res.statusCode).toBe(401);
   });
+
+  it('DELETE /api/favorites should 404 for non-existent user', async () => {
+    const token = getToken('nouser');
+    const res = await request(app)
+      .delete('/api/favorites')
+      .set('Authorization', `Bearer ${token}`);
+    expect(res.statusCode).toBe(404);
+  });
+
+
 });
