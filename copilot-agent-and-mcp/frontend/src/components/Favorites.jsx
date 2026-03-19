@@ -21,11 +21,18 @@ const Favorites = () => {
     dispatch(fetchFavorites(token));
   }, [dispatch, token, navigate]);
 
-  // generated-by-copilot: Handle clearing all favorites with confirmation dialog
+  // generated-by-copilot: Show custom confirmation dialog before clearing all favorites
   const handleClearAll = () => {
-    if (window.confirm('Are you sure you want to remove all favorite books?')) {
-      dispatch(clearAllFavorites(token));
-    }
+    setShowConfirm(true);
+  };
+
+  const handleConfirmClear = () => {
+    dispatch(clearAllFavorites(token));
+    setShowConfirm(false);
+  };
+
+  const handleCancelClear = () => {
+    setShowConfirm(false);
   };
 
   if (status === 'loading') return <div>Loading...</div>;
@@ -82,7 +89,7 @@ const Favorites = () => {
           {/* generated-by-copilot: Clear All button triggers confirmation dialog */}
           <button
             data-testid="clear-all-favorites-btn"
-            onClick={handleClearAllClick}
+            onClick={handleClearAll}
             style={{ marginTop: '1rem', background: '#e53935', color: '#fff', border: 'none', padding: '0.5rem 1.2rem', borderRadius: '4px', cursor: 'pointer' }}
           >
             Clear All Favorites
