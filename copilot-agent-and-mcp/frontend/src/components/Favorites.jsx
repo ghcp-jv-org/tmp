@@ -86,14 +86,6 @@ const Favorites = () => {
               </li>
             ))}
           </ul>
-          {/* generated-by-copilot: Clear All button triggers confirmation dialog */}
-          <button
-            data-testid="clear-all-favorites-btn"
-            onClick={handleClearAll}
-            style={{ marginTop: '1rem', background: '#e53935', color: '#fff', border: 'none', padding: '0.5rem 1.2rem', borderRadius: '4px', cursor: 'pointer' }}
-          >
-            Clear All Favorites
-          </button>
         </div>
       )}
       {/* generated-by-copilot: Confirmation dialog overlay */}
