@@ -14,7 +14,7 @@ Each exercise teaches a different aspect of the Coding Agent workflow:
 
 | Exercise | Skill | What You Learn |
 | --- | --- | --- |
-| 1 | **Issue-to-PR lifecycle + iteration** | Walk through the full Coding Agent pipeline: create issue → assign → monitor → review PR → refine via PR comments |
+| 1 | **Prompt-to-PR lifecycle + iteration** | Walk through the full Coding Agent pipeline: submit prompt in Cloud mode → agent creates PR → monitor Actions → review PR → refine via PR comments |
 | 2 | **Multi-issue coordination** | Decompose a complex feature into linked issues - the agent reads all linked issues via GitHub MCP and coordinates a full-stack PR |
 
 > All exercises run entirely on **GitHub.com**. No local sync needed.
@@ -74,11 +74,14 @@ Create a .gitignore file with node_modules and other commonly irrelevant files a
 
 ---
 
-## Exercise 1: Issue-to-PR Lifecycle + Iteration - Clear All Favorites
+## Exercise 1: Prompt-to-PR Lifecycle + Iteration - Clear All Favorites
 
-> **Purpose:** Walk through the complete Coding Agent pipeline end-to-end. You'll create a GitHub Issue using Agent Mode in VS Code, run it on the cloud, monitor the Actions workflow, review the generated PR, and then refine the output by commenting on the PR - learning every step of the autonomous workflow including the feedback loop.
+> **Purpose:** Walk through the complete Coding Agent pipeline end-to-end. You'll submit a prompt using Agent Mode
+> (Cloud) in VS Code, which directly creates a PR - no issue is created. You'll then monitor the Actions workflow,
+> review the generated PR, and refine the output by commenting on the PR - learning every step of the autonomous
+> workflow including the feedback loop.
 
-### Step 1: Create the Issue via Agent Mode
+### Step 1: Create the PR via Agent Mode (Cloud)
 
 1.  Install the GitHub Pull Request extension and open **Copilot Chat** in VS Code.
 2.  Use **Agent** setting and switch to **Cloud** from Local mode.
@@ -111,7 +114,7 @@ Assign the Pull Request to Copilot.
 ```
 
 3.  When Agent Mode asks for confirmation, approve the GitHub tool calls.
-4.  Verify the PR is created and assigned to Copilot.
+4.  The agent will directly create a PR (no issue gets created).
 
 ### Step 2: Monitor the Workflow
 
@@ -164,8 +167,7 @@ Add a toast notification that briefly confirms "All favorites cleared" after the
 
 ### Validation
 
-*   Issue created via Agent Mode in VS Code
-*   Copilot assigned, 👀 reaction visible
+*   PR created directly via Agent Mode (Cloud) in VS Code
 *   PR created with working implementation
 *   PR timeline shows agent reasoning
 *   CI passes on the PR (check Actions)

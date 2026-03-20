@@ -66,6 +66,41 @@ describe('Books List', () => {
     });
   });
 
+  // --- Sorting ---
+
+  describe('Sorting', () => {
+    // generated-by-copilot: Test that sort controls are displayed on the books page
+    it('should display sort controls on the books page', () => {
+      cy.get('a#books-link').click();
+      cy.get('[data-testid="sort-controls"]').should('be.visible');
+      cy.get('[data-testid="sort-title"]').should('be.visible');
+      cy.get('[data-testid="sort-author"]').should('be.visible');
+    });
+
+    // generated-by-copilot: Test that Title sort button is active by default
+    it('should show Title sort as active by default', () => {
+      cy.get('a#books-link').click();
+      cy.get('[data-testid="sort-title"]').should('contain', '↑');
+    });
+
+    // generated-by-copilot: Test that clicking Author sort changes the active sort button
+    it('should switch active sort to Author when Author button is clicked', () => {
+      cy.get('a#books-link').click();
+      cy.get('[data-testid="sort-author"]').click();
+      cy.get('[data-testid="sort-author"]').should('contain', '↑');
+      cy.get('[data-testid="sort-title"]').should('not.contain', '↑');
+      cy.get('[data-testid="sort-title"]').should('not.contain', '↓');
+    });
+
+    // generated-by-copilot: Test that clicking the same sort button toggles direction
+    it('should toggle sort direction when same sort button is clicked again', () => {
+      cy.get('a#books-link').click();
+      cy.get('[data-testid="sort-title"]').should('contain', '↑');
+      cy.get('[data-testid="sort-title"]').click();
+      cy.get('[data-testid="sort-title"]').should('contain', '↓');
+    });
+  });
+
   // --- Interaction ---
 
   describe('Interaction', () => {
