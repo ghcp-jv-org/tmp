@@ -84,7 +84,7 @@ const ReadingList = () => {
   // generated-by-copilot: Render book card with status-specific actions
   const renderBookCard = (book) => {
     return (
-      <div key={book.id} className={styles.bookCard}>
+      <div key={book.id} className={styles.bookCard} data-testid="book-card">
         <div className={styles.bookTitle}>{book.title}</div>
         <div className={styles.bookAuthor}>by {book.author}</div>
         

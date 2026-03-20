@@ -119,7 +119,7 @@ const BookList = () => {
             const readingStatus = readingListEntry ? readingListEntry.readingStatus : null;
             
             return (
-              <div className={styles.bookCard + ' ' + styles.bookCardWithHeart} key={book.id}>
+              <div className={styles.bookCard + ' ' + styles.bookCardWithHeart} key={book.id} data-testid="book-card">
                 {isFavorite && (
                   <span className={styles.favoriteHeart} title="In Favorites">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="#e25555" stroke="#e25555" strokeWidth="1.5">
