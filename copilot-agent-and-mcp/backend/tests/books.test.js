@@ -147,6 +147,24 @@ describe('Books API', () => {
       expect(titles).toEqual(sorted);
     });
 
+    // generated-by-copilot: Test sorting by author ascending
+    it('should sort books by author ascending', async () => {
+      const res = await request(app).get('/api/books?sort=author&limit=100');
+      expect(res.statusCode).toBe(200);
+      const authors = res.body.data.map(b => b.author.toLowerCase());
+      const sorted = [...authors].sort();
+      expect(authors).toEqual(sorted);
+    });
+
+    // generated-by-copilot: Test sorting by author descending
+    it('should sort books by author descending', async () => {
+      const res = await request(app).get('/api/books?sort=-author&limit=100');
+      expect(res.statusCode).toBe(200);
+      const authors = res.body.data.map(b => b.author.toLowerCase());
+      const sorted = [...authors].sort().reverse();
+      expect(authors).toEqual(sorted);
+    });
+
     // generated-by-copilot: Test default pagination limits
     it('should use default pagination when no params provided', async () => {
       const res = await request(app).get('/api/books');
