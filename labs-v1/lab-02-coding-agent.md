@@ -102,13 +102,9 @@ Requirements:
 - Add appropriate error handling
 
 Testing requirements:
-- Add backend tests following the EXACT patterns in backend/tests/favorites.test.js:
-  * Use supertest with the Express app mounted at /api (not /api/v1)
-  * Use test data files: backend/data/test-users.json and test-books.json
-  * Use the same JWT auth helper and createApiRouter setup
-  * Use the same beforeAll data initialization pattern
+- Add backend tests following existing patterns in backend/tests/
 - Run `npm run test:backend` and verify all tests pass before opening the PR
-- Do NOT create frontend unit tests - only backend Jest tests
+- Do NOT create frontend tests
 
 Assign the Pull Request to Copilot.
 ```
@@ -230,7 +226,7 @@ Technical Considerations:
 - Use existing styling patterns from frontend/src/styles/ and existing components
 - Implement proper form validation
 - Consider responsive design
-- Do NOT add frontend unit tests - testing is handled by existing E2E and backend test suites
+- Do NOT add frontend tests
 ```
 
 Note the issue number (e.g., `#4`).
@@ -253,11 +249,7 @@ Requirements:
 - Implement error handling
 
 Testing requirements:
-- Add backend tests following the EXACT patterns in backend/tests/books.test.js:
-  * Use supertest with the Express app mounted at /api (not /api/v1)
-  * Use test data files from backend/data/ (test-users.json, test-books.json)
-  * Use the same JWT auth helper and createApiRouter setup from existing tests
-  * Use the same beforeAll data initialization pattern
+- Add backend tests following existing patterns in backend/tests/
 - Run `npm run test:backend` and verify all tests pass before opening the PR
 
 Technical Considerations:

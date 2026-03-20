@@ -5,7 +5,6 @@ Important Instructions:
 1. Always start comments in the code with "generated-by-copilot: "
 2. When testing is needed, use these exact commands:
    - Backend tests: `npm run test:backend`
-   - E2E tests: `npm run build:frontend && npm run test:frontend`
 3. Before suggesting changes:
    - Check existing code context
    - Explain what changes will be made

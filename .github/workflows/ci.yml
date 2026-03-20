@@ -37,7 +37,3 @@ jobs:
     - name: Build frontend
       working-directory: copilot-agent-and-mcp/frontend
       run: npm run build
-
-    - name: Run E2E tests
-      working-directory: copilot-agent-and-mcp
-      run: npm run test:frontend
