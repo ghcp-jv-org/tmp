@@ -136,6 +136,13 @@ Add a toast notification that briefly confirms "All favorites cleared" after the
 
 **Expected:** Copilot reads the comment, updates the code, and pushes a new commit to the same PR.
 
+### Step 5a: Assign Copilot as PR Reviewer
+
+1.  In the PR sidebar, click **Reviewers** → search for and select **Copilot**
+2.  Copilot will automatically review the PR and leave comments on code quality, potential issues, and suggestions
+3.  Wait for the review to appear (~2-3 minutes)
+4.  Once Copilot starts the work, click the **View Session** button to view the real-time coding session.
+
 ### Step 6: Verify the Iteration
 
 1.  Wait for the new commit to appear (~3-5 minutes)
@@ -152,6 +159,7 @@ Add a toast notification that briefly confirms "All favorites cleared" after the
 *   Code changes cover backend, frontend, and tests
 *   PR comment triggered a new commit from Copilot
 *   New commit addresses the feedback (toast notification added)
+*   Copilot assigned as PR reviewer and review feedback received
 *   PR timeline shows agent reading and responding to your comment
 
 ---
@@ -186,41 +194,64 @@ Before creating issues, confirm the Coding Agent has access to the GitHub MCP se
 
 > The GitHub MCP server gives the Coding Agent access to issue details, linked references, and repo metadata. Without it, the agent cannot read the linked sub-issues.
 
+### How to Create an Issue on GitHub.com
+
+1.  Go to your repository on **GitHub.com**
+2.  Click the **Issues** tab at the top of the repository
+3.  Click the **New issue** button (green button, top right)
+4.  Enter the **Title** and **Description** (provided below for each issue)
+5.  Click **Submit new issue**
+6.  Note the issue number assigned (shown as `#N` in the issue URL and title)
+
 ### Step 2: Create the Frontend Issue
 
+> **Do not** assign this issue to Copilot. It will be linked from the main issue in Step 4.
+
+**Title:** `Add Book Reviews UI`
+
+**Description:**
 ```
-Add a book reviews UI — a "Reviews" section on each book card with a form for submitting new reviews (1-5 star rating and review text), a scrollable list of existing reviews, and the average rating displayed.
+Add a book reviews UI - a "Reviews" section on each book card with a form for submitting new reviews (1-5 star rating and review text), a scrollable list of existing reviews, and the average rating displayed.
 ```
 
-Note the issue number (e.g., `#4`).
+> **Your issue number:** #____
 
 ### Step 3: Create the Backend Issue
 
+> **Do not** assign this issue to Copilot. It will be linked from the main issue in Step 4.
+
+**Title:** `Add Book Reviews Backend API`
+
+**Description:**
 ```
-Add a backend API for book reviews — endpoints for submitting a review, retrieving reviews for a book, and getting a book's average rating.
+Add a backend API for book reviews - endpoints for submitting a review, retrieving reviews for a book, and getting a book's average rating.
 ```
 
-Note the issue number (e.g., `#5`).
+> **Your issue number:** #____
 
 ### Step 4: Create the Main Feature Issue
 
-Replace `#4` and `#5` with your actual issue numbers.
+In the **Description** below, replace `#__` with the issue numbers you noted in Steps 2 and 3.
 
+**Title:** `Implement Book Review System`
+
+**Description:**
 ```
-Implement a book review system that lets users review books and see others' reviews. This feature consists of two parts: frontend implementation (#4) and backend implementation (#5).
+Implement a book review system that lets users review books and see others' reviews. This feature consists of two parts: frontend implementation (Issue #_) and backend implementation (Issue #_).
 ```
 
-### Step 5: Assign and Move On
+**Assign** this issue to **Copilot** in the issue sidebar, click **Assignees** → search for, select **Copilot** and **Create** the issue.
 
-1.  Assign the **Main Feature Issue** to **Copilot**
-2.  Verify 👀 reaction
-3.  **Move to Lab 03** - return in ~10 minutes to review
+### Step 5: Verify and Move On
+
+1.  Verify the 👀 reaction appears on the main issue (confirms Copilot picked it up)
+2.  **Move to next Lab** - return in ~10 minutes to review the PR
 
 ### Step 6: Review the PR and Validate MCP Usage (after moving on)
 
 1.  Open the PR
 2.  In the **Copilot Coding Agent timeline**, verify MCP tool calls:
-    *   Look for entries showing the agent calling MCP tools (e.g., `get_issue`, `read_issue_content`)
+    *   Look for entries showing the agent calling MCP tools (e.g., `get_issue`, `issue_read`)
     *   Confirm the agent read **both** linked issues (frontend `#4` and backend `#5`)
     *   Verify the agent understood the full feature scope from the linked issue content
 3.  In **Files changed**, check:
