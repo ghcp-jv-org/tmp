@@ -88,25 +88,7 @@ Create a .gitignore file with node_modules and other commonly irrelevant files a
 3.  Submit the following prompt:
 
 ```
-Implement the below feature.
-
-Title: Add Clear All Favorites button
-
-Description:
-As a user, I want to be able to clear all my favorite books at once with a single button click.
-
-Requirements:
-- Add a "Clear All" button in the Favorites section
-- Show a confirmation dialog before clearing
-- Update both frontend and backend to support this feature
-- Add appropriate error handling
-
-Testing requirements:
-- Add backend tests following existing patterns in backend/tests/
-- Run `npm run test:backend` and verify all tests pass before opening the PR
-- Do NOT create frontend tests
-
-Assign the Pull Request to Copilot.
+Add a "Clear All Favorites" button that lets users remove all books from their favorites list at once, with a confirmation dialog before clearing. Assign the Pull Request and its Review to Copilot.
 ```
 
 3.  When Agent Mode asks for confirmation, approve the GitHub tool calls.
@@ -207,26 +189,7 @@ Before creating issues, confirm the Coding Agent has access to the GitHub MCP se
 ### Step 2: Create the Frontend Issue
 
 ```
-Title: Frontend Implementation - Book Reviews UI Components
-
-Description:
-Implement the frontend components for the book review system.
-
-Requirements:
-- Add a "Reviews" section to each book card
-- Create a form for submitting new reviews with:
-  * Rating (1-5 stars)
-  * Review text
-  * Submit button
-- Display existing reviews in a scrollable list
-- Show average rating
-- Add loading states and error handling
-
-Technical Considerations:
-- Use existing styling patterns from frontend/src/styles/ and existing components
-- Implement proper form validation
-- Consider responsive design
-- Do NOT add frontend tests
+Add a book reviews UI — a "Reviews" section on each book card with a form for submitting new reviews (1-5 star rating and review text), a scrollable list of existing reviews, and the average rating displayed.
 ```
 
 Note the issue number (e.g., `#4`).
@@ -234,28 +197,7 @@ Note the issue number (e.g., `#4`).
 ### Step 3: Create the Backend Issue
 
 ```
-Title: Backend Implementation - Book Reviews API
-
-Description:
-Implement the backend API and data layer for the book review system.
-
-Requirements:
-- Store reviews in a JSON file under backend/data/ (consistent with existing data storage pattern)
-- Implement REST API endpoints:
-  * POST /api/books/{id}/reviews
-  * GET /api/books/{id}/reviews
-  * GET /api/books/{id}/average-rating
-- Add input validation using the existing createErrorResponse/createSuccessResponse utils from backend/utils/apiUtils.js
-- Implement error handling
-
-Testing requirements:
-- Add backend tests following existing patterns in backend/tests/
-- Run `npm run test:backend` and verify all tests pass before opening the PR
-
-Technical Considerations:
-- Implement proper validation middleware
-- Follow existing route patterns in backend/routes/
-- Register new routes in backend/routes/index.js following the existing pattern
+Add a backend API for book reviews — endpoints for submitting a review, retrieving reviews for a book, and getting a book's average rating.
 ```
 
 Note the issue number (e.g., `#5`).
@@ -265,15 +207,7 @@ Note the issue number (e.g., `#5`).
 Replace `#4` and `#5` with your actual issue numbers.
 
 ```
-Title: Implement Book Review System
-
-Description:
-Add the ability for users to review books and see others' reviews.
-
-Requirements:
-This feature consists of two parts:
-- Frontend implementation: #4
-- Backend implementation: #5
+Implement a book review system that lets users review books and see others' reviews. This feature consists of two parts: frontend implementation (#4) and backend implementation (#5).
 ```
 
 ### Step 5: Assign and Move On
