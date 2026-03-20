@@ -4,6 +4,7 @@ const createBooksRouter = require('./books');
 const createFavoritesRouter = require('./favorites');
 const createReadingListRouter = require('./readingList');
 const createStaffPicksRouter = require('./staffPicks');
+const createReviewsRouter = require('./reviews');
 
 function createApiRouter(deps) {
   const express = require('express');
@@ -15,6 +16,8 @@ function createApiRouter(deps) {
   router.use('/reading-lists', createReadingListRouter(deps));
   // generated-by-copilot: Staff picks endpoint (no auth required)
   router.use('/staff-picks', createStaffPicksRouter());
+  // generated-by-copilot: Book reviews endpoints
+  router.use('/reviews', createReviewsRouter(deps));
 
   return router;
 }
