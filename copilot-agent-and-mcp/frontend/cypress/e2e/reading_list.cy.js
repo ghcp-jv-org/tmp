@@ -4,22 +4,23 @@ describe('Reading List Feature', () => {
   const password = `e2epass${Math.floor(Math.random() * 1000)}`;
   const user = { username, password };
 
-  beforeEach(() => {
+  // generated-by-copilot: Register the user once before all tests to avoid duplicate registration errors
+  before(() => {
     cy.visit('http://localhost:5173');
-  });
-
-  // generated-by-copilot: Helper function to register and login
-  const registerAndLogin = () => {
     cy.contains('Create Account').click();
     cy.get('input[name="username"]').type(user.username);
     cy.get('input[name="password"]').type(user.password);
     cy.get('button#register').click();
     cy.contains('Registration successful! You can now log in.').should('exist');
-    cy.wait(2000);
-    cy.get('input[name="username"]').type(user.username);
-    cy.get('input[name="password"]').type(user.password);
-    cy.get('button#login').click();
-    cy.contains(`Hi, ${user.username}`).should('exist');
+  });
+
+  beforeEach(() => {
+    cy.visit('http://localhost:5173');
+  });
+
+  // generated-by-copilot: Helper function to register and login - registration is done in before(), so just login here
+  const registerAndLogin = () => {
+    login();
   };
 
   // generated-by-copilot: Helper function to login existing user
