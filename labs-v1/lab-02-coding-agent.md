@@ -77,7 +77,9 @@ Create a .gitignore file with node_modules and other commonly irrelevant files a
 
 ## Exercise 1: Prompt-to-PR Lifecycle - Clear All Favorites
 
-> **Purpose:** Walk through the complete Coding Agent pipeline end-to-end. You'll submit a prompt using Agent Mode (Cloud) in VS Code, which directly creates a PR - no issue is created. You'll then monitor the Actions workflow and review the generated PR, learning every step of the autonomous workflow before touching any code.
+> **Purpose:** Walk through the complete Coding Agent pipeline end-to-end. You'll submit a prompt using Agent Mode
+> (Cloud) in VS Code, which directly creates a PR - no issue is created. You'll then monitor the Actions workflow
+> and review the generated PR, learning every step of the autonomous workflow before touching any code.
 
 ### Step 1: Create the PR via Agent Mode (Cloud)
 
