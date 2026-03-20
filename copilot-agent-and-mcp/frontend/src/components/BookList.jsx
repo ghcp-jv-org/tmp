@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { fetchBooks } from '../store/booksSlice';
+import { fetchBooks, setSortBy } from '../store/booksSlice';
 import { addFavorite, fetchFavorites } from '../store/favoritesSlice';
 import { 
   addToReadingList, 
@@ -20,6 +20,9 @@ const BookList = () => {
   const favorites = useAppSelector(state => state.favorites.items);
   // generated-by-copilot: Select reading list items at component level to avoid hooks inside map
   const readingListItems = useAppSelector(selectReadingListItems);
+  // generated-by-copilot: Select sort state from Redux to maintain sort across navigation
+  const sortField = useAppSelector(state => state.books.sortField);
+  const sortDirection = useAppSelector(state => state.books.sortDirection);
 
   // generated-by-copilot: State for reading list dropdown
   const [showReadingListDropdown, setShowReadingListDropdown] = useState({});
@@ -29,10 +32,16 @@ const BookList = () => {
       navigate('/');
       return;
     }
-    dispatch(fetchBooks());
+    dispatch(fetchBooks({ field: sortField, direction: sortDirection }));
     dispatch(fetchFavorites(token));
     dispatch(fetchReadingList(token));
-  }, [dispatch, token, navigate]);
+  }, [dispatch, token, navigate, sortField, sortDirection]);
+
+  // generated-by-copilot: Handle sort button click - toggle direction if same field, reset to asc for new field
+  const handleSort = (field) => {
+    const direction = sortField === field && sortDirection === 'asc' ? 'desc' : 'asc';
+    dispatch(setSortBy({ field, direction }));
+  };
 
   const handleAddFavorite = async (bookId) => {
     if (!token) {
@@ -68,6 +77,24 @@ const BookList = () => {
   return (
     <div>
       <h2>Books</h2>
+      {/* generated-by-copilot: Sort controls with visual indication of active sort */}
+      <div className={styles.sortControls} data-testid="sort-controls">
+        <span className={styles.sortLabel}>Sort by:</span>
+        <button
+          data-testid="sort-title"
+          className={`${styles.sortBtn}${sortField === 'title' ? ` ${styles.sortBtnActive}` : ''}`}
+          onClick={() => handleSort('title')}
+        >
+          Title {sortField === 'title' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
+        </button>
+        <button
+          data-testid="sort-author"
+          className={`${styles.sortBtn}${sortField === 'author' ? ` ${styles.sortBtnActive}` : ''}`}
+          onClick={() => handleSort('author')}
+        >
+          Author {sortField === 'author' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
+        </button>
+      </div>
       {books.length === 0 ? (
         <div style={{
           background: '#fff',
