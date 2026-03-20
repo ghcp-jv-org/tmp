@@ -8,6 +8,7 @@ import {
   fetchReadingList, 
   selectReadingListItems
 } from '../store/readingListSlice';
+import { fetchReviews, submitReview, clearSubmitError } from '../store/reviewsSlice';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/BookList.module.css';
 
@@ -26,6 +27,15 @@ const BookList = () => {
 
   // generated-by-copilot: State for reading list dropdown
   const [showReadingListDropdown, setShowReadingListDropdown] = useState({});
+  // generated-by-copilot: Track which book cards have the reviews section open
+  const [showReviews, setShowReviews] = useState({});
+  // generated-by-copilot: Per-book review form state
+  const [reviewForm, setReviewForm] = useState({});
+
+  // generated-by-copilot: Select reviews state from Redux
+  const reviewsByBookId = useAppSelector(state => state.reviews.byBookId);
+  const submitStatus = useAppSelector(state => state.reviews.submitStatus);
+  const submitError = useAppSelector(state => state.reviews.submitError);
 
   useEffect(() => {
     if (!token) {
@@ -36,6 +46,48 @@ const BookList = () => {
     dispatch(fetchFavorites(token));
     dispatch(fetchReadingList(token));
   }, [dispatch, token, navigate, sortField, sortDirection]);
+
+  // generated-by-copilot: Toggle reviews section for a book card
+  const toggleReviews = (bookId) => {
+    const next = !showReviews[bookId];
+    setShowReviews({ ...showReviews, [bookId]: next });
+    if (next && !reviewsByBookId[bookId]) {
+      dispatch(fetchReviews(bookId));
+    }
+  };
+
+  // generated-by-copilot: Handle review form field change
+  const handleReviewChange = (bookId, field, value) => {
+    setReviewForm({
+      ...reviewForm,
+      [bookId]: { ...reviewForm[bookId], [field]: value }
+    });
+  };
+
+  // generated-by-copilot: Submit a review for a book
+  const handleSubmitReview = async (bookId) => {
+    if (!token) {
+      navigate('/');
+      return;
+    }
+    const form = reviewForm[bookId] || {};
+    const rating = parseInt(form.rating, 10);
+    const reviewText = (form.reviewText || '').trim();
+    if (!rating || !reviewText) return;
+    dispatch(clearSubmitError());
+    await dispatch(submitReview({ token, bookId, rating, reviewText }));
+    // Reset form after submit
+    setReviewForm({ ...reviewForm, [bookId]: { rating: '', reviewText: '' } });
+    dispatch(fetchReviews(bookId));
+  };
+
+  // generated-by-copilot: Compute average rating for a book from local reviews state
+  const getAverageRating = (bookId) => {
+    const entry = reviewsByBookId[String(bookId)];
+    if (!entry || !entry.items || entry.items.length === 0) return null;
+    const sum = entry.items.reduce((acc, r) => acc + r.rating, 0);
+    return (sum / entry.items.length).toFixed(1);
+  };
 
   // generated-by-copilot: Handle sort button click - toggle direction if same field, reset to asc for new field
   const handleSort = (field) => {
@@ -238,6 +290,87 @@ const BookList = () => {
                     )}
                   </div>
                 </div>
+
+                {/* generated-by-copilot: Reviews toggle button and section */}
+                <button
+                  className={styles.reviewsToggleBtn}
+                  data-testid={`reviews-toggle-${book.id}`}
+                  onClick={() => toggleReviews(book.id)}
+                  style={{ marginTop: '8px' }}
+                >
+                  {showReviews[book.id] ? 'Hide Reviews' : 'Show Reviews'}
+                  {getAverageRating(book.id) && (
+                    <span className={styles.avgRatingBadge}>
+                      ★ {getAverageRating(book.id)}
+                    </span>
+                  )}
+                </button>
+
+                {showReviews[book.id] && (
+                  <div className={styles.reviewsSection} data-testid={`reviews-section-${book.id}`}>
+                    {/* generated-by-copilot: Existing reviews list */}
+                    <div className={styles.reviewsList}>
+                      {(() => {
+                        const entry = reviewsByBookId[String(book.id)];
+                        if (!entry || entry.status === 'loading') {
+                          return <div className={styles.reviewsLoading}>Loading reviews…</div>;
+                        }
+                        if (!entry.items || entry.items.length === 0) {
+                          return <div className={styles.reviewsEmpty}>No reviews yet. Be the first!</div>;
+                        }
+                        return entry.items.map(review => (
+                          <div key={review.id} className={styles.reviewItem}>
+                            <div className={styles.reviewHeader}>
+                              <span className={styles.reviewUsername}>{review.username}</span>
+                              <span className={styles.reviewRating}>
+                                {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                              </span>
+                            </div>
+                            <div className={styles.reviewText}>{review.reviewText}</div>
+                          </div>
+                        ));
+                      })()}
+                    </div>
+
+                    {/* generated-by-copilot: New review form */}
+                    <div className={styles.reviewForm}>
+                      <div className={styles.reviewFormRow}>
+                        <label htmlFor={`rating-${book.id}`} className={styles.reviewLabel}>Rating:</label>
+                        <select
+                          id={`rating-${book.id}`}
+                          className={styles.reviewRatingSelect}
+                          value={(reviewForm[book.id] || {}).rating || ''}
+                          onChange={e => handleReviewChange(book.id, 'rating', e.target.value)}
+                          data-testid={`rating-select-${book.id}`}
+                        >
+                          <option value="">Select</option>
+                          {[1,2,3,4,5].map(n => (
+                            <option key={n} value={n}>{n} ★</option>
+                          ))}
+                        </select>
+                      </div>
+                      <textarea
+                        className={styles.reviewTextarea}
+                        placeholder="Write your review…"
+                        value={(reviewForm[book.id] || {}).reviewText || ''}
+                        onChange={e => handleReviewChange(book.id, 'reviewText', e.target.value)}
+                        rows={3}
+                        data-testid={`review-text-${book.id}`}
+                      />
+                      {submitError && submitStatus === 'failed' && (
+                        <div className={styles.reviewError}>{submitError}</div>
+                      )}
+                      <button
+                        className={styles.reviewSubmitBtn}
+                        onClick={() => handleSubmitReview(book.id)}
+                        disabled={submitStatus === 'loading'}
+                        data-testid={`review-submit-${book.id}`}
+                      >
+                        {submitStatus === 'loading' ? 'Submitting…' : 'Submit Review'}
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}
