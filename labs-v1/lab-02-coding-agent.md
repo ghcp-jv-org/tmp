@@ -15,7 +15,7 @@ Each exercise teaches a different aspect of the Coding Agent workflow:
 | Exercise | Skill | What You Learn |
 | --- | --- | --- |
 | 1 | **Prompt-to-PR lifecycle** | Walk through the full Coding Agent pipeline: submit prompt in Cloud mode → agent creates PR → monitor Actions → review PR |
-| 2 | **PR iteration loop** | Refine agent output by commenting on the PR - the agent reads feedback and pushes new commits |
+| 2 | **Issue-based trigger + PR iteration loop** | Trigger the agent via a GitHub Issue (instead of a direct prompt), then refine the output by commenting on the PR — the agent reads feedback and pushes new commits |
 | 3 | **Multi-issue coordination** | Decompose a complex feature into linked issues - the agent reads all linked issues via GitHub MCP and coordinates a full-stack PR |
 
 > All exercises run entirely on **GitHub.com**. No local sync needed.
@@ -152,9 +152,16 @@ Assign the Pull Request to Copilot.
 
 ## Exercise 2: PR Iteration Loop - Book Sorting
 
-> **Purpose:** Learn the feedback loop. After the agent creates a PR, you'll add a comment requesting changes - and watch the agent read your feedback, update the code, and push a new commit. This is how you refine agent output without starting over.
+> **Purpose:** Learn two things Ex1 did not cover. First, a **different trigger method**: instead of submitting a prompt
+> directly from VS Code, you create a GitHub Issue and assign it to Copilot — the agent discovers the work via the
+> Issues queue. Second, the **PR iteration loop**: once the agent opens a PR, you add a comment requesting changes,
+> and the agent reads your feedback, updates the code, and pushes a new commit. This is how you refine agent output
+> without starting over.
 
 ### Step 1: Create the Issue
+
+> **New skill vs Ex1:** In Ex1 you submitted a prompt directly from VS Code Agent Mode. Here you create a GitHub
+> Issue first — this is the standard asynchronous workflow when you are not actively in VS Code.
 
 In **Copilot Chat** on your repository page:
 
@@ -178,7 +185,13 @@ Requirements:
 2.  Wait for 👀 reaction
 3.  Open **Actions** tab to monitor
 
+> The runner provisioning, checkout, and setup steps are the same as Ex1 — refer back to Ex1 Step 2 if you need a
+> reminder of what each log section means.
+
 ### Step 3: Review the PR
+
+> Reviewing the initial PR is the same process as Ex1 Steps 3–4. Once you have confirmed the PR looks reasonable,
+> continue to Step 4 below — this is where Ex2 diverges from Ex1.
 
 When the PR is created, examine:
 
@@ -189,7 +202,11 @@ When the PR is created, examine:
 
 ### Step 4: Iterate via PR Comment
 
-This is the key step - add a comment on the PR requesting a specific change:
+> **This is the unique skill of Ex2.** The agent does not stop after opening the PR — you can keep refining it by
+> leaving comments. The agent reads the thread, updates the code, and pushes a new commit to the same PR without
+> you having to restart.
+
+Add a comment on the PR requesting a specific change:
 
 ```
 Add a visual indicator (arrow icon) next to the column header showing the current sort direction.
