@@ -1,7 +1,7 @@
 # Lab 02 - Coding Agent: Autonomous PR Workflow
 
 > **Mode:** GitHub.com  
-> **Duration:** 45 min  
+> **Duration:** 35 min  
 > **Prerequisite:** [Lab 00](00-prerequisites.md)
 
 ---
@@ -14,9 +14,8 @@ Each exercise teaches a different aspect of the Coding Agent workflow:
 
 | Exercise | Skill | What You Learn |
 | --- | --- | --- |
-| 1 | **Issue-to-PR lifecycle** | Walk through the full Coding Agent pipeline: create issue → assign → monitor Actions → review PR |
-| 2 | **PR iteration loop** | Refine agent output by commenting on the PR - the agent reads feedback and pushes new commits |
-| 3 | **Multi-issue coordination** | Decompose a complex feature into linked issues - the agent reads all linked issues via GitHub MCP and coordinates a full-stack PR |
+| 1 | **Issue-to-PR lifecycle + iteration** | Walk through the full Coding Agent pipeline: create issue → assign → monitor → review PR → refine via PR comments |
+| 2 | **Multi-issue coordination** | Decompose a complex feature into linked issues - the agent reads all linked issues via GitHub MCP and coordinates a full-stack PR |
 
 > All exercises run entirely on **GitHub.com**. No local sync needed.
 
@@ -75,9 +74,9 @@ Create a .gitignore file with node_modules and other commonly irrelevant files a
 
 ---
 
-## Exercise 1: Issue-to-PR Lifecycle - Clear All Favorites
+## Exercise 1: Issue-to-PR Lifecycle + Iteration - Clear All Favorites
 
-> **Purpose:** Walk through the complete Coding Agent pipeline end-to-end. You'll create a GitHub Issue using Agent Mode in VS Code, run it on the cloud, monitor the Actions workflow, and review the generated PR - learning every step of the autonomous workflow before touching any code.
+> **Purpose:** Walk through the complete Coding Agent pipeline end-to-end. You'll create a GitHub Issue using Agent Mode in VS Code, run it on the cloud, monitor the Actions workflow, review the generated PR, and then refine the output by commenting on the PR - learning every step of the autonomous workflow including the feedback loop.
 
 ### Step 1: Create the Issue via Agent Mode
 
@@ -98,7 +97,15 @@ Requirements:
 - Show a confirmation dialog before clearing
 - Update both frontend and backend to support this feature
 - Add appropriate error handling
-- Include tests for the new functionality
+
+Testing requirements:
+- Add backend tests following the EXACT patterns in backend/tests/favorites.test.js:
+  * Use supertest with the Express app mounted at /api (not /api/v1)
+  * Use test data files: backend/data/test-users.json and test-books.json
+  * Use the same JWT auth helper and createApiRouter setup
+  * Use the same beforeAll data initialization pattern
+- Run `npm run test:backend` and verify all tests pass before opening the PR
+- Do NOT create frontend unit tests - only backend Jest tests
 
 Assign the Pull Request to Copilot.
 ```
@@ -135,8 +142,25 @@ Assign the Pull Request to Copilot.
 1.  In the PR **Files changed** tab, confirm:
     *   Backend: new route or updated `favorites.js` with a clear-all endpoint
     *   Frontend: "Clear All" button added to `Favorites.jsx`
-    *   Tests: at least one new test file or test case
+    *   Tests: at least one new test case in the backend tests
 2.  Check the **Actions** tab - CI should pass (backend tests + frontend build)
+
+### Step 5: Iterate via PR Comment
+
+This is the key step - after reviewing the PR, add a comment requesting a specific change:
+
+```
+Add a toast notification that briefly confirms "All favorites cleared" after the user confirms and the operation succeeds.
+```
+
+**Expected:** Copilot reads the comment, updates the code, and pushes a new commit to the same PR.
+
+### Step 6: Verify the Iteration
+
+1.  Wait for the new commit to appear (~3-5 minutes)
+2.  Review the diff - confirm toast notification logic was added
+3.  Check the PR timeline - note how the agent references your comment
+4.  Check **Actions** tab - CI should still pass after the iteration
 
 ### Validation
 
@@ -146,73 +170,13 @@ Assign the Pull Request to Copilot.
 *   PR timeline shows agent reasoning
 *   CI passes on the PR (check Actions)
 *   Code changes cover backend, frontend, and tests
-
----
-
-## Exercise 2: PR Iteration Loop - Book Sorting
-
-> **Purpose:** Learn the feedback loop. After the agent creates a PR, you'll add a comment requesting changes - and watch the agent read your feedback, update the code, and push a new commit. This is how you refine agent output without starting over.
-
-### Step 1: Create the Issue
-
-In **Copilot Chat** on your repository page:
-
-```
-Title: Add book list sorting options
-
-Description:
-As a user, I want to be able to sort the book list by different criteria (title, author) to better organize and find books.
-
-Requirements:
-- Add sorting options (dropdown or buttons) for title and author
-- Implement sorting on both frontend and backend
-- Maintain sort state when navigating
-- Add visual indication of current sort order
-- Include unit and integration tests
-```
-
-### Step 2: Assign to Copilot
-
-1.  Assign the issue to **Copilot**
-2.  Wait for 👀 reaction
-3.  Open **Actions** tab to monitor
-
-### Step 3: Review the PR
-
-When the PR is created, examine:
-
-*   Frontend: UI controls (dropdown/buttons) for sort selection
-*   State management: Sort state in Redux store
-*   Backend: Any server-side sorting endpoints (if applicable)
-*   Tests: Coverage for sort logic
-
-### Step 4: Iterate via PR Comment
-
-This is the key step - add a comment on the PR requesting a specific change:
-
-```
-Add a visual indicator (arrow icon) next to the column header showing the current sort direction.
-```
-
-**Expected:** Copilot reads the comment, updates the code, and pushes a new commit to the same PR.
-
-### Step 5: Verify the Iteration
-
-1.  Wait for the new commit to appear (~3-5 minutes)
-2.  Review the diff - confirm the arrow indicator was added
-3.  Check the PR timeline - note how the agent references your comment
-
-### Validation
-
-*   Sorting PR created with UI controls
 *   PR comment triggered a new commit from Copilot
-*   New commit addresses the feedback (arrow indicator added)
+*   New commit addresses the feedback (toast notification added)
 *   PR timeline shows agent reading and responding to your comment
-*   CI passes after the iteration
 
 ---
 
-## Exercise 3: Multi-Issue Coordination - Book Reviews
+## Exercise 2: Multi-Issue Coordination - Book Reviews
 
 > **Purpose:** Decompose a complex feature into separate frontend and backend issues, then link them to a main issue. The Coding Agent reads all linked issues via the GitHub MCP server and coordinates a single PR covering the full stack. This teaches issue decomposition - the pattern for real-world agent-driven development.
 
@@ -259,12 +223,12 @@ Requirements:
 - Display existing reviews in a scrollable list
 - Show average rating
 - Add loading states and error handling
-- Include frontend unit tests
 
 Technical Considerations:
-- Use existing styling patterns
+- Use existing styling patterns from frontend/src/styles/ and existing components
 - Implement proper form validation
 - Consider responsive design
+- Do NOT add frontend unit tests - testing is handled by existing E2E and backend test suites
 ```
 
 Note the issue number (e.g., `#4`).
@@ -275,22 +239,29 @@ Note the issue number (e.g., `#4`).
 Title: Backend Implementation - Book Reviews API
 
 Description:
-Implement the backend API and database changes for the book review system.
+Implement the backend API and data layer for the book review system.
 
 Requirements:
-- Create new database schema for reviews
+- Store reviews in a JSON file under backend/data/ (consistent with existing data storage pattern)
 - Implement REST API endpoints:
   * POST /api/books/{id}/reviews
   * GET /api/books/{id}/reviews
   * GET /api/books/{id}/average-rating
-- Add input validation
+- Add input validation using the existing createErrorResponse/createSuccessResponse utils from backend/utils/apiUtils.js
 - Implement error handling
-- Add backend unit tests
-- Update API documentation
+
+Testing requirements:
+- Add backend tests following the EXACT patterns in backend/tests/books.test.js:
+  * Use supertest with the Express app mounted at /api (not /api/v1)
+  * Use test data files from backend/data/ (test-users.json, test-books.json)
+  * Use the same JWT auth helper and createApiRouter setup from existing tests
+  * Use the same beforeAll data initialization pattern
+- Run `npm run test:backend` and verify all tests pass before opening the PR
 
 Technical Considerations:
 - Implement proper validation middleware
-- Add rate limiting for review submission
+- Follow existing route patterns in backend/routes/
+- Register new routes in backend/routes/index.js following the existing pattern
 ```
 
 Note the issue number (e.g., `#5`).
@@ -327,7 +298,7 @@ This feature consists of two parts:
 3.  In **Files changed**, check:
     *   Frontend: review form component, star rating, review list
     *   Backend: API endpoints (`POST /api/books/{id}/reviews`, `GET /api/books/{id}/reviews`)
-    *   Tests: coverage for both frontend and backend
+    *   Tests: backend test coverage following existing patterns
 4.  Check **Actions** tab - CI should pass
 
 ### Validation
