@@ -6,6 +6,8 @@ node_modules/
 # Cypress
 cypress/videos/
 cypress/screenshots/
+frontend/cypress/videos/
+frontend/cypress/screenshots/
 
 # Tests data
 backend/data/test-*.json

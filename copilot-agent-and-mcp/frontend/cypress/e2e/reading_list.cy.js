@@ -59,7 +59,7 @@ describe('Reading List Feature', () => {
     
     // generated-by-copilot: Add first book to reading list as "want to read"
     cy.get('button').contains('Add to Reading List').first().click();
-    cy.contains('Want to Read').click();
+    cy.get('[data-testid="reading-list-want-to-read"]').first().click();
     
     // generated-by-copilot: Verify book shows as added
     cy.get('button').contains('In Reading List').should('exist');
@@ -77,15 +77,15 @@ describe('Reading List Feature', () => {
     
     // generated-by-copilot: Add first book as "want to read"
     cy.get('button').contains('Add to Reading List').first().click();
-    cy.contains('Want to Read').click();
+    cy.get('[data-testid="reading-list-want-to-read"]').first().click();
     
     // generated-by-copilot: Add second book as "currently reading"
     cy.get('button').contains('Add to Reading List').eq(1).click();
-    cy.contains('Currently Reading').click();
+    cy.get('[data-testid="reading-list-currently-reading"]').first().click();
     
     // generated-by-copilot: Add third book as "finished"
     cy.get('button').contains('Add to Reading List').eq(2).click();
-    cy.contains('Finished').click();
+    cy.get('[data-testid="reading-list-finished"]').first().click();
     
     // generated-by-copilot: Check reading list page tabs
     cy.get('a#reading-list-link').click();
@@ -112,7 +112,7 @@ describe('Reading List Feature', () => {
     // generated-by-copilot: Add a book as "want to read"
     cy.get('a#books-link').click();
     cy.get('button').contains('Add to Reading List').first().click();
-    cy.contains('Want to Read').click();
+    cy.get('[data-testid="reading-list-want-to-read"]').first().click();
     
     // generated-by-copilot: Go to reading list
     cy.get('a#reading-list-link').click();
@@ -143,7 +143,7 @@ describe('Reading List Feature', () => {
     // generated-by-copilot: Add a book to reading list
     cy.get('a#books-link').click();
     cy.get('button').contains('Add to Reading List').first().click();
-    cy.contains('Want to Read').click();
+    cy.get('[data-testid="reading-list-want-to-read"]').first().click();
     
     // generated-by-copilot: Go to reading list and remove book
     cy.get('a#reading-list-link').click();
@@ -168,14 +168,14 @@ describe('Reading List Feature', () => {
     
     // generated-by-copilot: Add first book as "currently reading"
     cy.get('button').contains('Add to Reading List').first().click();
-    cy.contains('Currently Reading').click();
+    cy.get('[data-testid="reading-list-currently-reading"]').first().click();
     
     // generated-by-copilot: Verify status badge appears
     cy.contains('Reading').should('exist');
     
     // generated-by-copilot: Add second book as "finished"
     cy.get('button').contains('Add to Reading List').eq(1).click();
-    cy.contains('Finished').click();
+    cy.get('[data-testid="reading-list-finished"]').first().click();
     
     // generated-by-copilot: Verify finished badge appears
     cy.contains('Finished').should('exist');
@@ -187,7 +187,7 @@ describe('Reading List Feature', () => {
     // generated-by-copilot: Add a book to reading list
     cy.get('a#books-link').click();
     cy.get('button').contains('Add to Reading List').first().click();
-    cy.contains('Want to Read').click();
+    cy.get('[data-testid="reading-list-want-to-read"]').first().click();
     
     // generated-by-copilot: Verify button changes to "In Reading List"
     cy.get('button').contains('In Reading List').should('exist');
@@ -205,7 +205,7 @@ describe('Reading List Feature', () => {
     // generated-by-copilot: Add same book to both favorites and reading list
     cy.get('button').contains('Add to Favorites').first().click();
     cy.get('button').contains('Add to Reading List').first().click();
-    cy.contains('Want to Read').click();
+    cy.get('[data-testid="reading-list-want-to-read"]').first().click();
     
     // generated-by-copilot: Verify both features work
     cy.get('button').contains('In Favorites').should('exist');
@@ -232,7 +232,7 @@ describe('Reading List Feature', () => {
     // generated-by-copilot: Add and finish a book
     cy.get('a#books-link').click();
     cy.get('button').contains('Add to Reading List').first().click();
-    cy.contains('Finished').click();
+    cy.get('[data-testid="reading-list-finished"]').first().click();
     
     // generated-by-copilot: Check reading list shows dates
     cy.get('a#reading-list-link').click();

@@ -191,6 +191,7 @@ const BookList = () => {
                             zIndex: 1000
                           }}>
                             <button
+                              data-testid="reading-list-want-to-read"
                               onClick={() => handleAddToReadingList(book.id, 'want-to-read')}
                               style={{
                                 display: 'block',
@@ -205,6 +206,7 @@ const BookList = () => {
                               Want to Read
                             </button>
                             <button
+                              data-testid="reading-list-currently-reading"
                               onClick={() => handleAddToReadingList(book.id, 'currently-reading')}
                               style={{
                                 display: 'block',
@@ -219,6 +221,7 @@ const BookList = () => {
                               Currently Reading
                             </button>
                             <button
+                              data-testid="reading-list-finished"
                               onClick={() => handleAddToReadingList(book.id, 'finished')}
                               style={{
                                 display: 'block',
